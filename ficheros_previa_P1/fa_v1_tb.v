@@ -1,42 +1,77 @@
+// Testbench para modulo semisumador visto antes
 
-`timescale 1 ns / 10 ps
+`timescale 1 ns / 10 ps //Directiva que fija la unidad de tiempo de simulaci�n y el paso de simulaci�n
 
-module fa_v1_tb;
-reg a, b, c_in;
-wire sum, c_out;
+module ha_v1_tb;
+//declaracion de se�ales
 
-fa_v1 f1(sum, c_out, a, b, c_in);
+reg test_a, test_b, test_cin; //las se�ales de entrada al semisumador. Se han declarado reg porque queremos inicializarlas
+wire test_sum, test_carry; //se�ales de salida, se declaran como wire porque sus valores se fijan por el semisumador
 
-initial begin
-  $monitor("tiempo=%0d a=%b b=%b c_in=%b sum=%b c_out=%b", $time, a, b, c_in, sum, c_out);
+//instancia del modulo a testear, con notaci�n de posiciones de argumentos 
+fa ha1(test_sum, test_carry, test_a, test_b, test_cin);
+
+//Lo siguiente comentado es una notaci�n alternativa para instanciar el m�dulo, los par�metros se denotan con un punto seguido del
+//nombre del par�metro en la definici�n original del m�dulo y entre par�ntesis a qu� se conecta en el modulo actual
+//no importa el orden de los par�metros definidos as� -?
+//ha_v1 ha1(.a(test_a), .b(test_b), .sum(test_sum), .carry(test_carry)); 
+
+
+initial
+begin
+  $monitor("tiempo=%0d a=%b b=%b c_in=%b suma=%b c_out=%b", $time, test_a, test_b, test_cin, test_sum, test_carry);
   $dumpfile("fa_v1_tb.vcd");
   $dumpvars;
-  // Vector de test 0
-  a = 1'b0;
-  b = 1'b0;
-  c_in = 1'b0;
+
+  //vector de test 0
+  test_a = 1'b0;
+  test_b = 1'b0;
+  test_cin = 1'b0;
   #20;
 
-  //Vector de test 1
-  a = 1'b1;
-  b = 1'b1;
-  c_in = 1'b0;
+  //vector de test 1
+  test_a = 1'b0;
+  test_b = 1'b0;
+  test_cin = 1'b1;
   #20;
 
-  //Vector de test 2
-  a = 1'b1;
-  b = 1'b1;
-  c_in = 1'b1;
+  //vector de test 2
+  test_a = 1'b0;
+  test_b = 1'b1;
+  test_cin = 1'b0;
   #20;
 
-  $finish;
+  //vector de test 3
+  test_a = 1'b0;
+  test_b = 1'b1;
+  test_cin = 1'b1;
+  #20;
+
+  //vector de test 4
+  test_a = 1'b1;
+  test_b = 1'b0;
+  test_cin = 1'b0;
+  #20
+
+  //vector de test 5
+  test_a = 1'b1;
+  test_b = 1'b0;
+  test_cin = 1'b1;
+  #20
+
+  //vector de test 6
+  test_a = 1'b1;
+  test_b = 1'b1;
+  test_cin = 1'b0;
+  #20
+
+  //vector de test 7
+  test_a = 1'b1;
+  test_b = 1'b1;
+  test_cin = 1'b1;
+  #20
+
+  $finish;  //fin simulacion
+
 end
-
 endmodule
-
-
-
-
-
-
-
