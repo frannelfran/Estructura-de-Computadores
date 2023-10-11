@@ -1,5 +1,7 @@
-// 1.1. Basándonos en los ejemplos vistos en las sesiones tutorizadas, implementar un multiplexor de 4
-// entradas de un bit con el siguiente prototipo:
+/* 
+  1.1. Basándonos en los ejemplos vistos en las sesiones tutorizadas, implementar un multiplexor de 4
+  entradas de un bit con el siguiente prototipo:
+*/
 
 module mux4_1(output reg out, input wire a, b, c, d, input wire [1:0] S);
   always @(S, a, b, c, d) begin
