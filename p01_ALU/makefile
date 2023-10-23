@@ -3,6 +3,7 @@ main:
 	@echo "Compilando ficheros..."
 	iverilog cl_tb.v cl.v mux4_1.v -o cl
 	iverilog ul4_tb.v ul4.v cl.v mux4_1.v -o ul4
+	iverilog alu_tb.v alu.v sum4.v fa_v1.v ha_vr.v -o alu
 
 .PHONY: clean
 
@@ -11,3 +12,5 @@ clean:
 	@echo "Eliminando ficheros compilados..."
 	rm -f cl
 	rm -f ul4
+	rm -f alu
+	rm -f alu.vcd
