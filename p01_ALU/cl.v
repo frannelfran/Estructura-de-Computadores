@@ -6,7 +6,7 @@
 
 module cl(output wire out, input wire a, b, input wire [1:0] S);
   input wire and_, or_, xor_, not_;
-  assign and_ = a && b; // Operador AND
+  assign and_ = a & b; // Operador AND
   assign or_ = a | b; // OPERADOR OR
   assign xor_ = a ^ b; // OPERADOR XOR
   assign not_ = ~a; // OPERADOR NOT
