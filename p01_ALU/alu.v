@@ -1,29 +1,30 @@
 module alu(output wire [3:0] R, output wire zero, c_out, sign, input wire [3:0] A, B, input wire c_in, input wire [1:0] ALUOP, input wire l);
-  input wire add1, opp1_A, opp2_B, cpl; // Entradas de los multiplexores
-  output wire [3:0] out_add1, out_opp1_A, out_opp2_B; // Salidas de los multiplexores
-  output wire [3:0] out_cpl; // Salidas de cpl
-  output wire [3:0] out_sum4, out_ul4; // Salidas para las operaciones aritméticas y lógicas
+  output wire [3:0] out_add1, OP1, out_op2_B, OP2, out_sum4, out_ul4;
+  input wire add1, op1_A, op2_B, cpl;
 
-  // Entrada de los multiplexores
+  // Funciones de entrada
   assign add1 = ALUOP[0];
-  assign opp1_A = l | (ALUOP[1] & ~ALUOP[0]);
-  assign opp2_B = l | (ALUOP[1] & ~ALUOP[0]);
-  assign cpl = (l & ALUOP[1] & ALUOP[0]) | (~l & ~ALUOP[1] & ALUOP[0]);
+  assign op1_A = l | (ALUOP[1] & ~ALUOP[0]);
+  assign op2_B = l | (ALUOP[1] & ~ALUOP[0]);
+  assign cpl = ~l & ~ALUOP[1] & ALUOP[0];
 
-  // Creo los multiplexores de la ALU
+  assign zero = ~R[3] & ~R[2] & ~R[1] & ~R[0];
+  assign sign = R[3];
+  
+  // Multiplexores
   mux2_4 mux_add1(out_add1, 4'b0000, 4'b0001, add1);
-  mux2_4 mux_op1_A(out_opp1_A, out_add1, A, opp1_A);
-  mux2_4 mux_op2_B(out_opp2_B, A, B, opp2_B);
+  mux2_4 mux_op1_A(OP1, out_add1, A, op1_A);
+  mux2_4 mux_op2_B(out_op2_B, A, B, op2_B);
 
-  //Creo el complemento a 1
-  compl1 compl1_cpl(out_cpl, out_opp2_B, cpl);
+  // Compl1
+  compl1 compl1_cpl(OP2, out_op2_B, cpl);
 
-  // Realizo las operaciones aritméticas
-  sum4 sum4_cin(out_sum4, c_out, out_opp1_A, out_opp2_B, c_in);
+  // Operaciones aritméticas
+  sum4 sum4_c_in(out_sum4, c_out, OP1, OP2, c_in);
 
-  // Realizo las opoeraciones lógicas
-  ul4 ul4_aluop(out_ul4, out_opp1_A, out_cpl, ALUOP);
+  // Operaciones lógicas
+  ul4 ul4_ALUOP(out_ul4, OP1, OP2, ALUOP);
 
-  // Multiplexor para R
+  // Salida R
   mux2_4 mux_R(R, out_sum4, out_ul4, l);
 endmodule
