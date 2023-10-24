@@ -20,7 +20,7 @@ module alu(output wire [3:0] R, output wire zero, c_out, sign, input wire [3:0] 
   compl1 compl1_cpl(OP2, out_op2_B, cpl);
 
   // Operaciones aritméticas
-  sum4 sum4_c_in(out_sum4, c_out, OP1, OP2, c_in);
+  sum4_v2 sum4_c_in(out_sum4, c_out, OP1, OP2, c_in);
 
   // Operaciones lógicas
   ul4 ul4_ALUOP(out_ul4, OP1, OP2, ALUOP);
